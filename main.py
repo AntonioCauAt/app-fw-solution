@@ -40,7 +40,7 @@ src = mne.setup_source_space(subject, spacing='oct6', subjects_dir=subj_dir,add_
 #Compute Bem Model
 conductivity = (0.3,)  # for single layer (MEG)
 # conductivity = (0.3, 0.006, 0.3)  # for three layers (EEG)
-model = mne.make_bem_model(subject=subject, ico=4  conductivity=conductivity, subjects_dir=subj_dir)
+model = mne.make_bem_model(subject=subject, ico=4, conductivity=conductivity, subjects_dir=subj_dir)
 bem = mne.make_bem_solution(model)
 
 
