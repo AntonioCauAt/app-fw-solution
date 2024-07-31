@@ -18,20 +18,14 @@ __location__ = os.path.realpath(
 with open(__location__+'/config.json') as config_json:
     config = json.load(config_json)
     
+
 # == CONFIG PARAMETERS ==
 fname_raw    = config['mne']
 subjects_dir = config['output'] 
-fname_cov    = config ['cov']
+fname_trans  = config ['cov']
+include_meg  = config['include_meg']
 
 subject = 'output'
-
-# Copy and rename the file
-os.system('cp {fname_cov} '+'trans.fif')
-
-fname_trans = 'trans.fif'
-
-include_meg = config['include_meg']
-
 
 # == SOURCE SPACE ==
 #Assume that coregistration is done
@@ -53,7 +47,7 @@ bem = mne.make_bem_solution(model)
 
 # Compute Forward Model
 fwd = mne.make_forward_solution(fname_raw, 
-            trans=fname_cov,
+            trans=fname_trans,
             src=src, 
             bem=bem,
             meg=include_meg,  # include MEG channels
