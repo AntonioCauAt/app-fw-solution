@@ -51,9 +51,9 @@ model = mne.make_bem_model(subject=subject, ico=4, conductivity=conductivity, su
 bem = mne.make_bem_solution(model)
 
 
-#Compute Forward Model
+# Compute Forward Model
 fwd = mne.make_forward_solution(fname_raw, 
-            trans=fname_trans,
+            trans=fname_cov,
             src=src, 
             bem=bem,
             meg=include_meg,  # include MEG channels
@@ -64,11 +64,16 @@ fwd = mne.make_forward_solution(fname_raw,
 # How each point in the brain space contributes to the signal measured at each sensor
 leadfield = fwd['sol']['data']
 
-#Save fwd
+# == SAVE RESULTS ==
+
+# SAVE DATA (fwd.fif)
 fwd_fname = os.path.join('out_dir', 'fwd.fif')
 mne.write_forward_solution(fwd_fname, fwd, overwrite=True)
 
-#Save report
+# SAVE FIGURE
+#
+
+# SAVE REPORT
 report = mne.Report(title='Report')
 report_path = os.path.join('out_dir_report', 'report.html')
 report.save(report_path, overwrite=True)
