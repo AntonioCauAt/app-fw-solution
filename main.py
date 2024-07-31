@@ -18,11 +18,11 @@ with open(__location__+'/config.json') as config_json:
     
 #Parameters of config file
 fname_raw = config['mne']
-subj_dir = config['output']
+subj_dir = config['output_bem'] 
 subject = 'output'
 #fname_trans = config ['output2']
 
-
+include_meg = config['include_meg']
 #raw = mne.io.read_raw_fif(fname_raw, preload=True)
 
 # # # SOURCE SPACE # # #
@@ -46,7 +46,7 @@ bem = mne.make_bem_solution(model)
 #Compute Forward Model
 '''fwd = mne.make_forward_solution(fname_raw, trans=fname_trans,
             src=src, bem=bem,
-            meg=True,  # include MEG channels
+            meg=include_meg,  # include MEG channels
             eeg=False,  # exclude EEG channels
             mindist=5.0,  # ignore sources <= 5mm from inner skull
             n_jobs=1)  # number of jobs to run in parallel
