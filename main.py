@@ -18,9 +18,13 @@ with open(__location__+'/config.json') as config_json:
     
 #Parameters of config file
 fname_raw = config['mne']
-subj_dir = config['output_bem'] 
+subj_dir = config['output'] 
 subject = 'output'
-fname_trans = config ['output']
+fname_cov = config ['cov']
+subj_dir = config['output']
+
+# Copy and rename the file
+os.system(f'cp {fname_cov} {'trans.fif'}')
 
 include_meg = config['include_meg']
 #raw = mne.io.read_raw_fif(fname_raw, preload=True)
@@ -44,7 +48,7 @@ bem = mne.make_bem_solution(model)
 
 
 #Compute Forward Model
-fwd = mne.make_forward_solution(fname_raw, trans=fname_trans,
+fwd = mne.make_forward_solution(fname_raw, trans='trans.fif',
             src=src, bem=bem,
             meg=include_meg,  # include MEG channels
             eeg=False,  # exclude EEG channels
