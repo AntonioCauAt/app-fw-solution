@@ -26,7 +26,7 @@ fname_cov    = config ['cov']
 subject = 'output'
 
 # Copy and rename the file
-os.system(f'cp {fname_cov} {'trans.fif'}')
+os.system('cp {fname_cov} '+'trans.fif')
 
 fname_trans = 'trans.fif'
 
