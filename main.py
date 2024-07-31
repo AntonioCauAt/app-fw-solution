@@ -2,7 +2,6 @@
 import os
 import json
 import mne
-import helper
 import numpy as np
 import pandas as pd
 import matplotlib
@@ -13,9 +12,9 @@ import matplotlib.pyplot as plt
 __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-# Load brainlife config.json
-with open('config.json','r') as config_f:
-    config = helper.convert_parameters_to_None(json.load(config_f))
+# Populate mne_config.py file with brainlife config.json
+with open(__location__+'/config.json') as config_json:
+    config = json.load(config_json)
     
 #Parameters of config file
 fname_raw = config['mne']
