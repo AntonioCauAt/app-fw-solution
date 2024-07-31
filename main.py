@@ -18,46 +18,50 @@ __location__ = os.path.realpath(
 with open(__location__+'/config.json') as config_json:
     config = json.load(config_json)
     
-#Parameters of config file
-fname_raw = config['mne']
-subj_dir = config['output'] 
+# == CONFIG PARAMETERS ==
+fname_raw    = config['mne']
+subjects_dir = config['output'] 
+fname_cov    = config ['cov']
+
 subject = 'output'
-fname_cov = config ['cov']
-subj_dir = config['output']
 
 # Copy and rename the file
 os.system(f'cp {fname_cov} {'trans.fif'}')
 
-include_meg = config['include_meg']
-#raw = mne.io.read_raw_fif(fname_raw, preload=True)
+fname_trans = 'trans.fif'
 
-# # # SOURCE SPACE # # #
+include_meg = config['include_meg']
+
+
+# == SOURCE SPACE ==
 #Assume that coregistration is done
-src = mne.setup_source_space(subject, spacing='oct6', subjects_dir=subj_dir,add_dist=False)
+src = mne.setup_source_space(subject, spacing='oct6', subjects_dir=subjects_dir,add_dist=False)
 
 
 #Visualization?
-#mne.viz.plot_alignment(raw, trans_fname, subject=subject, dig=False, src=src,subjects_dir=subj_dir, verbose=True, meg=False,eeg=False);
+#mne.viz.plot_alignment(raw, trans_fname, subject=subject, dig=False, src=src,subjects_dir=subjects_dir, verbose=True, meg=False,eeg=False);
                              
 
-# # # FORWARD SOLUTION # # #
+# == FORWARD SOLUTION ==
 
-#Compute Bem Model
+# Compute BEM Model
 conductivity = (0.3,)  # for single layer (MEG)
 # conductivity = (0.3, 0.006, 0.3)  # for three layers (EEG)
-model = mne.make_bem_model(subject=subject, ico=4, conductivity=conductivity, subjects_dir=subj_dir)
+model = mne.make_bem_model(subject=subject, ico=4, conductivity=conductivity, subjects_dir=subjects_dir)
 bem = mne.make_bem_solution(model)
 
 
 #Compute Forward Model
-fwd = mne.make_forward_solution(fname_raw, trans='trans.fif',
-            src=src, bem=bem,
+fwd = mne.make_forward_solution(fname_raw, 
+            trans=fname_trans,
+            src=src, 
+            bem=bem,
             meg=include_meg,  # include MEG channels
             eeg=False,  # exclude EEG channels
             mindist=5.0,  # ignore sources <= 5mm from inner skull
             n_jobs=1)  # number of jobs to run in parallel
 
-#How each point in the brain space contributes to the signal measured at each sensor
+# How each point in the brain space contributes to the signal measured at each sensor
 leadfield = fwd['sol']['data']
 
 #Save fwd
