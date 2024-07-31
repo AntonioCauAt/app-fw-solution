@@ -17,15 +17,17 @@ __location__ = os.path.realpath(
 with open('config.json','r') as config_f:
     config = helper.convert_parameters_to_None(json.load(config_f))
     
-
-fname = config['mne']
-raw = mne.io.read_raw_fif(fname, preload=True)
-subject = 'output'
+#Parameters of config file
+fname_raw = config['mne']
 subj_dir = config['output']
+subject = 'output'
+#fname_trans = config ['output2']
+
+
+#raw = mne.io.read_raw_fif(fname_raw, preload=True)
 
 # # # SOURCE SPACE # # #
 #Assume that coregistration is done
-mne.set_log_level('WARNING')
 src = mne.setup_source_space(subject, spacing='oct6', subjects_dir=subj_dir,add_dist=False)
 
 
@@ -43,19 +45,19 @@ bem = mne.make_bem_solution(model)
 
 
 #Compute Forward Model
-fwd = mne.make_forward_solution(fname, trans=trans_fname,
-src=src, bem=bem,
-meg=True,  # include MEG channels
-eeg=False,  # exclude EEG channels
-mindist=5.0,  # ignore sources <= 5mm from inner skull
-n_jobs=1)  # number of jobs to run in parallel
+'''fwd = mne.make_forward_solution(fname_raw, trans=fname_trans,
+            src=src, bem=bem,
+            meg=True,  # include MEG channels
+            eeg=False,  # exclude EEG channels
+            mindist=5.0,  # ignore sources <= 5mm from inner skull
+            n_jobs=1)  # number of jobs to run in parallel
 
 #How each point in the brain space contributes to the signal measured at each sensor
 leadfield = fwd['sol']['data']
 
 #Save fwd
-fwd_fname = os.path.join(subject, fname)
-mne.write_forward_solution(fwd_fname, fwd, overwrite=True)
+fwd_fname = os.path.join('out_dir', 'fwd.fif')
+mne.write_forward_solution(fwd_fname, fwd, overwrite=True)'''
 
 #Save report
 report = mne.Report(title='Report')
