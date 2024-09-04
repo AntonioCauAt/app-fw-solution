@@ -21,7 +21,6 @@ fname_raw = config['mne']
 subj_dir = config['output'] 
 subject = 'output'
 fname_cov = config ['cov']
-subj_dir = config['output']
 
 # Copy and rename the file
 os.system(f'cp {fname_cov} {'trans.fif'}')
