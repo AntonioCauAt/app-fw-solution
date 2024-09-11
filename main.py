@@ -24,12 +24,8 @@ fname_raw    = config['mne']
 subjects_dir = config['output'] 
 fname_trans  = config ['cov']
 include_meg  = config['include_meg']
-
 subject = 'output'
-<<<<<<< HEAD
 fname_cov = config ['cov']
-=======
->>>>>>> e67d6f1151dd293896808a4cc4ca9cd15ffddbbb
 
 # == SOURCE SPACE ==
 #Assume that coregistration is done
